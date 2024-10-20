@@ -5,12 +5,13 @@ const Order = require("../Models/Order");
 // api: /api/order/:userId
 exports.getAllOrders = async (req, res) => {
   try {
+    // find orders and add userDetails using userId
     const orders = await Order.aggregate([
       {
         $lookup: {
           from: "users",
           localField: "userId",
-          foreignField: "_id",
+          foreignField: "_id", // userId field in the users collection
           as: "userDetails",
         },
       },
@@ -24,14 +25,14 @@ exports.getAllOrders = async (req, res) => {
     if (orders && orders.length > 0) {
       console.log("Orders =".bold, orders);
 
-      res.status(200).json({ error: false, status: true, message: "Orders collected successful", data: orders });
+      res.status(200).json({ error: false, status: true, message: "Orders collected successful", data: orders }); // success response
       console.log("Orders collected successful".yellow);
     } else {
-      res.status(400).json({ error: true, status: false, message: "Orders not found" });
+      res.status(400).json({ error: true, status: false, message: "Orders not found" }); // error response
       console.log("Orders not found".red.bold);
     }
   } catch (error) {
-    res.status(500).json({ error: true, status: false, message: "server error" });
+    res.status(500).json({ error: true, status: false, message: "server error" }); // server error response
     console.log("server error", error);
   }
 };
@@ -46,18 +47,18 @@ exports.updateOrderStatus = async (req, res) => {
     const { id } = req.params;
     const { orderStatus } = req.body;
 
-    const updatedOrder = await Order.findByIdAndUpdate(id, { orderStatus });
+    const updatedOrder = await Order.findByIdAndUpdate(id, { orderStatus }); // find order using order id and update order status
     if (updatedOrder) {
       console.log("updatedOrder =".bold, updatedOrder);
 
-      res.status(200).json({ error: false, status: true, message: "Order status updated successfully" });
+      res.status(200).json({ error: false, status: true, message: "Order status updated successfully" }); // success response
       console.log("Order status updated successfully".yellow);
     } else {
-      res.status(400).json({ error: true, status: false, message: "Order updation failed" });
+      res.status(400).json({ error: true, status: false, message: "Order updation failed" }); // error response
       console.log("Order updation failed".red.bold);
     }
   } catch (error) {
-    res.status(500).json({ error: true, status: false, message: "server error" });
+    res.status(500).json({ error: true, status: false, message: "server error" }); // server error response
     console.log("server error", error);
   }
 };

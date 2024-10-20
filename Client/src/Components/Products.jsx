@@ -15,10 +15,10 @@ import {
 import { setProducts } from "../Redux/reducers/products";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const Products = () => {
   const dispatch = useDispatch();
+  // extract products from redux
   const { products } = useSelector((state) => state.products);
 
   // formData states
@@ -45,7 +45,7 @@ const Products = () => {
   };
   const handleDeleteClose = () => setDeleteOpen(false);
 
-  // function for remove formData states value
+  // function that remove formData states value
   const removeData = () => {
     setImages([]);
     setCategory("");
@@ -53,6 +53,7 @@ const Products = () => {
     setDescription("");
     setPrice("");
   };
+  //  set values from selected product
   const handleEditOpen = async (id) => {
     const product = await products.find((item) => item._id === id);
     setImages(product.images);
@@ -70,6 +71,8 @@ const Products = () => {
     setProductId(id);
     setDeleteOpen(true);
   };
+
+  // delete product function
   const handleDeleteProduct = async () => {
     const response = await deleteProductAction(productId);
     if (response.status) {
@@ -107,7 +110,7 @@ const Products = () => {
       formData.append("images", image);
     });
 
-    const response = await createProductAction(formData); // calling create product action
+    const response = await createProductAction(formData); //  create product action
     if (response.status) {
       handleCreateClose();
       getAllProducts();
@@ -126,16 +129,17 @@ const Products = () => {
     formData.append("name", name);
     formData.append("description", description);
     formData.append("price", price);
+    // check images cahnged or not
     if (JSON.stringify(originalImages) !== JSON.stringify(images)) {
       images.forEach((image) => {
         formData.append("images", image);
       });
     }
 
-    const response = await updateProductAction(formData, productId); // Call edit product action
+    const response = await updateProductAction(formData, productId); // edit product action
     if (response.status) {
       handleEditClose();
-      getAllProducts();
+      getAllProducts(); // get all product function
       enqueueSnackbar(response.message, { variant: "success" });
     } else if (response.error) {
       enqueueSnackbar(response.message, { variant: "error" });

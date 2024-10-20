@@ -6,30 +6,31 @@ const Product = require("../Models/Products");
 // api: /api/products/create
 exports.createProduct = async (req, res) => {
   console.log("req body", req.body);
-  console.log("req files", req.files);
+  console.log("req files", req.files); // for product images
 
   try {
     const { category, name, description, price } = req.body;
+    // check the files were uploaded
     if (!req.files || req.files.length === 0) {
       res.status(404).json({ error: true, status: false, message: "images not found" });
       console.log("images not found".red.bold);
       return;
     }
-    const images = req.files.map((file) => file.location);
-    const newProduct = new Product({ images, category, name, description, price });
+    const images = req.files.map((file) => file.location); // Extract the location of each file
+    const newProduct = new Product({ images, category, name, description, price }); // create new product
 
     if (newProduct) {
-      await newProduct.save();
+      await newProduct.save(); // save new product
       console.log("new product =".bold, newProduct);
 
-      res.status(200).json({ error: false, status: true, message: "Product created successfully" });
+      res.status(200).json({ error: false, status: true, message: "Product created successfully" }); // success response
       console.log("Product created successfully".yellow);
     } else {
-      res.status(400).json({ error: true, status: false, message: "Product creation failed" });
+      res.status(400).json({ error: true, status: false, message: "Product creation failed" }); // error response
       console.log("Product creation failed".red.bold);
     }
   } catch (error) {
-    res.status(500).json({ error: true, status: false, message: "server error" });
+    res.status(500).json({ error: true, status: false, message: "server error" }); // server error response
     console.log("server error", error);
   }
 };
@@ -45,31 +46,33 @@ exports.updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const { category, name, description, price } = req.body;
+    // check the files were uploaded
     if (!req.files || req.files.length === 0) {
-      const updatedProduct = await Product.findByIdAndUpdate(id, { category, name, description, price }, { new: true });
+      const updatedProduct = await Product.findByIdAndUpdate(id, { category, name, description, price }, { new: true }); // find the product by id and update without images
       if (!updatedProduct) {
-        res.status(404).json({ error: true, status: false, message: "Product not found for updation" });
+        res.status(404).json({ error: true, status: false, message: "Product not found for updation" }); // error response
         console.log("Product not found for updation".red.bold);
         return;
       }
     } else {
-      const images = req.files.map((file) => file.location);
+      const images = req.files.map((file) => file.location); // Extract the location of each file
+      // find the product by id and update with images
       const updatedProduct = await Product.findByIdAndUpdate(
         id,
         { images, category, name, description, price },
         { new: true }
       );
       if (!updatedProduct) {
-        res.status(404).json({ error: true, status: false, message: "Product not found for updation" });
+        res.status(404).json({ error: true, status: false, message: "Product not found for updation" }); // error response
         console.log("Product not found for updation".red.bold);
         return;
       }
     }
 
-    res.status(200).json({ error: false, status: true, message: "Product updated successfully" });
+    res.status(200).json({ error: false, status: true, message: "Product updated successfully" }); // success response
     console.log("Product updated successfully".yellow);
   } catch (error) {
-    res.status(500).json({ error: true, status: false, message: "server error" });
+    res.status(500).json({ error: true, status: false, message: "server error" }); // server error response
     console.log("server error", error);
   }
 };
@@ -82,17 +85,17 @@ exports.deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deletedProduct = await Product.findByIdAndDelete(id);
+    const deletedProduct = await Product.findByIdAndDelete(id); // find product by id and delete the product
 
     if (deletedProduct) {
-      res.status(200).json({ error: false, status: true, message: "Product deleted successfully" });
+      res.status(200).json({ error: false, status: true, message: "Product deleted successfully" }); // success response
       console.log("Product deleted successfully".yellow);
     } else {
-      res.status(404).json({ error: true, status: false, message: "Product not found for deletion" });
+      res.status(404).json({ error: true, status: false, message: "Product not found for deletion" }); // error response
       console.log("Product not found for deletion".red.bold);
     }
   } catch (error) {
-    res.status(500).json({ error: true, status: false, message: "server error" });
+    res.status(500).json({ error: true, status: false, message: "server error" }); // server error response
     console.log("server error", error);
   }
 };
@@ -102,17 +105,17 @@ exports.deleteProduct = async (req, res) => {
 // api: /api/products/get_products
 exports.allProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find(); // find all products
 
     if (products.length > 0) {
-      res.status(200).json({ error: false, status: true, message: "Products collected successfully",data:products });
+      res.status(200).json({ error: false, status: true, message: "Products collected successfully", data: products }); // success response
       console.log("Products collected successfully".yellow);
     } else {
-      res.status(404).json({ error: true, status: false, message: "No products found" });
+      res.status(404).json({ error: true, status: false, message: "No products found" }); // error response
       console.log("No products found".red.bold);
     }
   } catch (error) {
-    res.status(500).json({ error: true, status: false, message: "server error" });
+    res.status(500).json({ error: true, status: false, message: "server error" }); // server error response
     console.log("server error", error);
   }
 };

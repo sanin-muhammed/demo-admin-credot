@@ -15,8 +15,9 @@ app.use(express.urlencoded());
 app.use(cors());
 app.use(morgan("dev"));
 
-connectDB();
+connectDB(); // connect database
 
+// Setting up API endpoints
 app.use("/api/products", ProductRoutes);
 app.use("/api/orders", OrderRoutes);
 

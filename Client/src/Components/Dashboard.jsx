@@ -17,6 +17,7 @@ const NAVIGATION = [
     segment: "products",
     title: "Products",
     icon: <CategoryIcon />,
+    
   },
   {
     segment: "orders",

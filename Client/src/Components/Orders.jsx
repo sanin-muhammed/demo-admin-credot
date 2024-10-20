@@ -16,9 +16,10 @@ const Orders = () => {
 
   const [orderId, setOrderId] = useState("");
   const [status, setStatus] = useState("");
-  const [editOpen, setEditOpen] = useState(false);
   const statusArray = ["Pending", "Processing", "Shipped", "Delivered"];
-
+  
+  // popup component state
+  const [editOpen, setEditOpen] = useState(false);
   const handleEditOpen = async (id) => {
     const order = await orders.find((item) => item._id === id);
     setStatus(order.orderStatus);
@@ -26,6 +27,7 @@ const Orders = () => {
     setEditOpen(true);
   };
 
+  // edit order status function
   const handleEditStatus = async () => {
     const response = await updateOrderStatusAction(status, orderId);
     if (response.status) {
@@ -37,6 +39,7 @@ const Orders = () => {
     }
   };
 
+  // get all order function
   const getAllOrders = async () => {
     const response = await getAllOrdersAction();
     if (response.status) {
