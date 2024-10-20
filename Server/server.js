@@ -15,9 +15,7 @@ const PORT = process.env.PORT || 2003;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
-  cors({
-    origin: "https://demo-admin-credot.onrender.com",
-  })
+  cors()
 );
 app.use(morgan("dev"));
 
