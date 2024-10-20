@@ -14,7 +14,11 @@ require("dotenv").config();
 const PORT = process.env.PORT || 2003;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://demo-admin-credot.onrender.com",
+  })
+);
 app.use(morgan("dev"));
 
 // Middleware to serve the Swagger UI

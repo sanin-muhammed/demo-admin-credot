@@ -5,10 +5,10 @@
     "description": "API documentation for a sample project",
     "version": "1.0.0"
   },
-  "host": "localhost:2003",
+  "host": "demo-admin-credot.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/api/products/get_products": {
